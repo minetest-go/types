@@ -11,6 +11,18 @@ func NewPos(x, y, z int) *Pos {
 	return &Pos{x, y, z}
 }
 
+func SortPos(p1, p2 *Pos) (*Pos, *Pos) {
+	return &Pos{
+			min(p1[0], p2[0]),
+			min(p1[1], p2[1]),
+			min(p1[2], p2[2]),
+		}, &Pos{
+			max(p1[0], p2[0]),
+			max(p1[1], p2[1]),
+			max(p1[2], p2[2]),
+		}
+}
+
 func (p *Pos) X() int { return p[0] }
 func (p *Pos) Y() int { return p[1] }
 func (p *Pos) Z() int { return p[2] }
