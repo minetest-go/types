@@ -18,6 +18,17 @@ func TestPos(t *testing.T) {
 	assert.Equal(t, 30, p2.Z())
 }
 
+func TestPosIndex(t *testing.T) {
+	pos := types.NewPos(5, 8, 12)
+
+	i := pos.Index()
+	pos = types.NewPosFromIndex(i)
+
+	assert.Equal(t, pos.X(), 5)
+	assert.Equal(t, pos.Y(), 8)
+	assert.Equal(t, pos.Z(), 12)
+}
+
 func TestSortPos(t *testing.T) {
 	p1 := &types.Pos{1, 2, 3}
 	p2 := &types.Pos{3, 2, 1}
