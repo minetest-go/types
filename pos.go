@@ -7,6 +7,12 @@ import (
 
 type Pos [3]int
 
+// zero position
+var PosZero = Pos{0, 0, 0}
+
+// size of a mapblock
+var MapBlockSize = Pos{16, 16, 16}
+
 func NewPos(x, y, z int) *Pos {
 	return &Pos{x, y, z}
 }

@@ -41,3 +41,12 @@ func TestSortPos(t *testing.T) {
 	assert.Equal(t, 2, p2[1])
 	assert.Equal(t, 3, p2[2])
 }
+
+func TestPosIsWithin(t *testing.T) {
+	p1 := &types.Pos{1, 2, 3}
+	p2 := &types.Pos{10, 20, 30}
+
+	assert.True(t, types.NewPos(1, 2, 3).IsWithin(p1, p2))
+	assert.True(t, types.NewPos(10, 2, 3).IsWithin(p1, p2))
+	assert.False(t, types.NewPos(0, 2, 3).IsWithin(p1, p2))
+}
