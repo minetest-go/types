@@ -23,4 +23,12 @@ func TestArea(t *testing.T) {
 		assert.False(t, visited[p.String()])
 		visited[p.String()] = true
 	}
+
+	a2 := types.NewArea(types.NewPos(0, 0, 0), types.NewPos(1, 2, 3))
+	assert.True(t, a2.Intersects(a))
+	assert.True(t, a.Intersects(a2))
+
+	a2 = types.NewArea(types.NewPos(0, 0, 0), types.NewPos(1, 1, 1))
+	assert.False(t, a2.Intersects(a))
+	assert.False(t, a.Intersects(a2))
 }

@@ -33,3 +33,17 @@ func (a *Area) Corners() []*Pos {
 		{a.Pos2.X(), a.Pos2.Y(), a.Pos1.Z()},
 	}
 }
+
+func (a *Area) Intersects(a2 *Area) bool {
+	for _, p1 := range a.Corners() {
+		if p1.IsWithin(a2.Pos1, a2.Pos2) {
+			return true
+		}
+	}
+	for _, p2 := range a2.Corners() {
+		if p2.IsWithin(a.Pos1, a.Pos2) {
+			return true
+		}
+	}
+	return false
+}
