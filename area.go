@@ -47,3 +47,23 @@ func (a *Area) Intersects(a2 *Area) bool {
 	}
 	return false
 }
+
+func (a *Area) Union(a2 *Area) *Area {
+	if !a.Intersects(a2) {
+		// no union possible
+		return nil
+	}
+
+	return &Area{
+		Pos1: NewPos(
+			max(a.Pos1.X(), a2.Pos1.X()),
+			max(a.Pos1.Y(), a2.Pos1.Y()),
+			max(a.Pos1.Z(), a2.Pos1.Z()),
+		),
+		Pos2: NewPos(
+			min(a.Pos2.X(), a2.Pos2.X()),
+			min(a.Pos2.Y(), a2.Pos2.Y()),
+			min(a.Pos2.Z(), a2.Pos2.Z()),
+		),
+	}
+}
