@@ -3,19 +3,26 @@ package types
 import "fmt"
 
 type MapBlock struct {
-	Size         int            `json:"size"`
-	Version      byte           `json:"version"`
-	Underground  bool           `json:"underground"`
-	AirOnly      bool           `json:"air_only"`
-	Timestamp    uint32         `json:"timestamp"`
-	Mapdata      *MapData       `json:"mapdata"`
-	Metadata     *Metadata      `json:"metadata"`
+	Size        int    `json:"size"`
+	Version     byte   `json:"version"`
+	Underground bool   `json:"underground"`
+	AirOnly     bool   `json:"air_only"`
+	Timestamp   uint32 `json:"timestamp"`
+	ContentId   []int  `json:"contentid"`
+	Param1      []int  `json:"param1"`
+	Param2      []int  `json:"param2"`
+	// index -> inventory-map
+	Inventory map[int]map[string][]string `json:"inventory"`
+	// index -> fields
+	Fields map[int]map[string]string `json:"fields"`
+	// nodeid -> nodename
 	BlockMapping map[int]string `json:"blockmapping"`
 }
 
 func NewMapblock() *MapBlock {
 	mb := MapBlock{}
-	mb.Metadata = NewMetadata()
+	mb.Inventory = make(map[int]map[string][]string)
+	mb.Fields = make(map[int]map[string]string)
 	mb.BlockMapping = make(map[int]string)
 	return &mb
 }
@@ -26,11 +33,11 @@ func (mb *MapBlock) IsEmpty() bool {
 }
 
 func (mb *MapBlock) GetNodeId(p *Pos) int {
-	return mb.Mapdata.ContentId[p.Index()]
+	return mb.ContentId[p.Index()]
 }
 
 func (mb *MapBlock) GetParam2(p *Pos) int {
-	return mb.Mapdata.Param2[p.Index()]
+	return mb.Param2[p.Index()]
 }
 
 func (mb *MapBlock) GetNodeName(p *Pos) string {
@@ -41,14 +48,14 @@ func (mb *MapBlock) GetNodeName(p *Pos) string {
 func (mb *MapBlock) GetNode(p *Pos) (*Node, error) {
 	i := p.Index()
 
-	if i > len(mb.Mapdata.ContentId) {
-		return nil, fmt.Errorf("unexpected index, got %d, len: %d, pos: %s", i, len(mb.Mapdata.ContentId), p)
+	if i > len(mb.ContentId) {
+		return nil, fmt.Errorf("unexpected index, got %d, len: %d, pos: %s", i, len(mb.ContentId), p)
 	}
 
 	return &Node{
 		Pos:    p,
-		Name:   mb.BlockMapping[mb.Mapdata.ContentId[i]],
-		Param1: mb.Mapdata.Param1[i],
-		Param2: mb.Mapdata.Param2[i],
+		Name:   mb.BlockMapping[mb.ContentId[i]],
+		Param1: mb.Param1[i],
+		Param2: mb.Param2[i],
 	}, nil
 }
